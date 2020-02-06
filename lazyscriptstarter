@@ -5,15 +5,15 @@
 # Date made in ISO-5901 format. This is just in case you have a program with the same name in the same directory, so it won't overwrite it or modify the other $FILE in any way.  
 iso5901="$(date +'%Y%m%dat%H%M%S')"
 
-printf "What shell are you programming in?\n"
+printf "What shell are you programming in?\\n"
 read -r typeofshell
 
 # Look for shell, this way you don't have to type the direct path or rely on relative paths in strings
 sheel="$(whereis "$typeofshell")"
 
-printf "What is the file name?\n"
+printf "What is the file name?\\n"
 read -r filename
 datefile=$filename$iso5901
 
-printf "#!%s\n" "$sheel" > "$datefile"
+printf "#!%s\\n" "$sheel" > "$datefile"
 $EDITOR "$datefile"
