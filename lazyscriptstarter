@@ -1,19 +1,18 @@
 #!/bin/ksh
 
-# This will do is put "#!/bin/ksh" in a new file and open up nvim to edit the file. I'm lazy.
+# This will do is put "#!{prefix}$SHELL" in a new file and open up nvim to edit the file. I'm lazy.
+# Example:              
+# ./lazyscriptstarter ksh test
+# Will output a script named "test" with the date appended to the end of it, with #!{prefix}$SHELL 
+# As the first line.
 
 # Date made in ISO-5901 format. This is just in case you have a program with the same name in the same directory, so it won't overwrite it or modify the other $FILE in any way.  
-iso5901="$(date +'%Y%m%dat%H%M%S')"
-
-printf "What shell are you programming in?\\n"
-read -r typeofshell
+iso5901="$(date +'%Y%m%d')"        
 
 # Look for shell, this way you don't have to type the direct path or rely on relative paths in strings
-sheel="$(whereis "$typeofshell")"
+sheel="$(whereis "$1")"
 
-printf "What is the file name?\\n"
-read -r filename
-datefile=$filename$iso5901
+datefile=$2$iso5901
 
 printf "#!%s\\n" "$sheel" > "$datefile"
 $EDITOR "$datefile"
