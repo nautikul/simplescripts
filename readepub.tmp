@@ -1,0 +1,32 @@
+#!/bin/ksh
+# ePub reader. it unzips an epub of your choice, and loads it into a browser of your choice. 
+
+# Note that this was made for CLI-based browsers but *should* work with any browser since it's
+# just loading HTML files. :)
+
+# Usage: ./epubread file.epub
+
+if  [[ $1 == "" ]] ; then
+	printf "Need an argument! (Hint: ./epubread file.epub)\\n"
+	exit 1
+fi
+
+# /tmp/readepub clear, just in case there's something in there 
+rm -rf /tmp/readepub
+
+# Make the tmp 
+mkdir -p /tmp/readepub
+unzip -qq "$1" "*.html" -x  OEBPS/wrap0000.html -d /tmp/readepub 
+
+# read $CLIBROWSER, then open
+if [[ $CLIBROWSER == "" ]] ; then
+	printf "What browser would you like to open it in? "
+	read -r CBROW
+	CLIBROWSER="whereis $CBROW" 
+fi
+
+"$CLIBROWSER" /tmp/readepub/OEBPS 
+
+exit 1
+
+# Todo: Make it cleaner (keep only the chapter files, generate a clean Table of Contents?)
