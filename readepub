@@ -1,0 +1,18 @@
+#!/bin/ksh
+
+# Get the "Books" directory -- I want to make this an "if" statement
+printf "Book dir? "
+read -r BOOKDIR
+
+# Get the book name
+printf "Book name? "
+read -r BOOKNAME
+
+# Make the $BOOKDIR if not made, and the book's directory, then unzip the epub
+# into it
+mkdir -p "$BOOKDIR"/"$BOOKNAME" && unzip "$1" -d "$BOOKDIR"/"$BOOKNAME"
+
+# read $CLIBROWSER, then open
+printf "What browser would you like to open it in? "
+read -r CLIBROWSER
+"$CLIBROWSER" "$BOOKDIR"/"$BOOKNAME"/OEBPS 
