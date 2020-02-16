@@ -1,0 +1,47 @@
+#!/bin/ksh
+# ePub reader. it unzips an epub of your choice, and loads it into a browser of your choice. 
+
+# Note that this was made for CLI-based browsers but *should* work with any browser since it's
+# just loading HTML files. :)
+
+# Usage: ./epubread file.epub
+
+while getopts k:t:* o
+do	case "$o" in
+	k)	BDIR="$HOME"/Books;;
+	t)	BDIR=/tmp/readepub;;
+	*)	exit 1
+	esac
+done
+
+if  [[ $1 == "" ]] ; then
+	printf "Need an argument! (Hint: ./epubread -{k,t} file.epub)\\n"
+	exit 1
+fi
+
+printf "\\nYour book will be saved in %s\\n\\n" "$BDIR"
+printf "What is the book's name? "
+read -r BNAME
+
+
+# /tmp/readepub clear, just in case there's something in there (if you chose -t)
+rm -rf /tmp/readepub
+
+# Make the tmp 
+mkdir -p "$BDIR"/"$BNAME"
+unzip -qq "$2" "*.html" -x  OEBPS/wrap0000.html -d "$BDIR"/"$BNAME" 
+
+# Clean up folders
+mv "$BDIR"/"$BNAME"/OEBPS/* "$BDIR"/"$BNAME"
+rm -r "$BDIR"/"$BNAME"/OEBPS
+
+# Remove HTML from text, consolidate into a single file using sed
+sed -e 's/<[^>]*>/ /g' "$BDIR"/"$BNAME"/*.html > "$BDIR"/"$BNAME"/"$BNAME".txt
+rm "$BDIR"/"$BNAME"/*.html
+
+# Read yo book!
+less "$BDIR"/"$BNAME"/"$BNAME"".txt" 
+
+exit 1
+
+# Todo: Make it cleaner (keep only the chapter files, generate a clean Table of Contents?)
