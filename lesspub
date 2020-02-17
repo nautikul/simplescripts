@@ -1,10 +1,12 @@
 #!/bin/ksh
 # ePub reader. it unzips an epub of your choice, and loads it into a browser of your choice. 
+# The only dependency it has, other than a Unix-like environment itself, is `unzip`. If I'm
+# wrong on that, let me know!
 
 # Note that this was made for CLI-based browsers but *should* work with any browser since it's
 # just loading HTML files. :)
 
-# Usage: ./epubread file.epub
+# Usage: ./epubread -{k,t} file.epub
 
 while getopts k:t:* o
 do	case "$o" in
