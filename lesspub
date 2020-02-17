@@ -1,17 +1,16 @@
 #!/bin/ksh
 # ePub reader. it unzips an epub of your choice, and loads it into a browser of your choice. 
-# The only dependency it has, other than a Unix-like environment itself, is `unzip`. If I'm
-# wrong on that, let me know!
 
 # Note that this was made for CLI-based browsers but *should* work with any browser since it's
 # just loading HTML files. :)
 
 # Usage: ./epubread -{k,t} file.epub
 
+
 while getopts k:t:* o
 do	case "$o" in
 	k)	BDIR="$HOME"/Books;;
-	t)	BDIR=/tmp/readepub;;
+	t)	BDIR=/tmp/lesspub;;
 	*)	exit 1
 	esac
 done
@@ -30,19 +29,19 @@ read -r BNAME
 rm -rf /tmp/readepub
 
 # Make the tmp 
-mkdir -p "$BDIR"/"$BNAME"
-unzip -qq "$2" "*.html" -x  OEBPS/wrap0000.html -d "$BDIR"/"$BNAME" 
+mkdir -p "$BDIR"/"$BNAME/chapters"
+unzip -qqj "$2" "*.html" -x  OEBPS/wrap0000.html -d "$BDIR"/"$BNAME" 
 
-# Clean up folders
-mv "$BDIR"/"$BNAME"/OEBPS/* "$BDIR"/"$BNAME"
-rm -r "$BDIR"/"$BNAME"/OEBPS
+# Clean up files, merge html files for text based browser 
+mv "$BDIR"/"$BNAME"/*.html "$BDIR"/"$BNAME"/chapters/
+cat "$BDIR"/"$BNAME"/chapters/*.html > "$BDIR"/"$BNAME"/"$BNAME".html
 
 # Remove HTML from text, consolidate into a single file using sed
 sed -e 's/<[^>]*>/ /g' "$BDIR"/"$BNAME"/*.html > "$BDIR"/"$BNAME"/"$BNAME".txt
-rm "$BDIR"/"$BNAME"/*.html
+
 
 # Read yo book!
-less "$BDIR"/"$BNAME"/"$BNAME"".txt" 
+less -s -M +Gg "$BDIR"/"$BNAME"/"$BNAME".txt
 
 exit 1
 
