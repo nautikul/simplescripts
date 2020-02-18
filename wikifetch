@@ -1,0 +1,18 @@
+#!/bin/ksh
+# Wiki "fetcher" for the lazy men. 
+# I prefer doing things in CLI so I made this to shorten 
+# the time I am taking, opening up a text-based browser and going
+# to Wikipedia. Because I'm the #1 lazy man in my life.
+# This will fetch a Wiki page and open it in a browser of your choice.
+
+# Get your preferred browser to visit said Wikipedia page
+printf "What is your (text or graphical) browser of choice?\\n"
+read -r CLIBROWSER
+
+# Local copy test
+curl -o /tmp/"$1".html https://en.m.wikipedia.org/wiki/"$1"
+
+# Huge step: actually opening the page
+$CLIBROWSER /tmp/"$1".html
+rm /tmp/"$1".html 
+
