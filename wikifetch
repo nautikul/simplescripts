@@ -5,14 +5,14 @@
 # to Wikipedia. Because I'm the #1 lazy man in my life.
 # This will fetch a Wiki page and open it in a browser of your choice.
 
+# Usage: ./wikifetch article
+
 # Get your preferred browser to visit said Wikipedia page
 printf "What is your (text or graphical) browser of choice?\\n"
 read -r CLIBROWSER
 
-# Local copy test
+# Make a local copy of the requested article
 curl -o /tmp/"$1".html https://en.m.wikipedia.org/wiki/"$1"
 
 # Huge step: actually opening the page
 $CLIBROWSER /tmp/"$1".html
-rm /tmp/"$1".html 
-
