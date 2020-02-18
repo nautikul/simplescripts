@@ -5,8 +5,9 @@
 # to Wikipedia. Because I'm the #1 lazy man in my life.
 # This will fetch a Wiki page and open it in a browser of your choice.
 
-# Usage: ./wikifetch article_name
-# As implied, replace spaces with underscores.
+# Usage: ./wikifetch Article_Name
+# As implied, replace spaces with underscores. As with the actual site,
+# the article name is case-sensitive.
 
 # Get your preferred browser to visit said Wikipedia page
 printf "What is your (text or graphical) browser of choice?\\n"
