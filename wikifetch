@@ -5,16 +5,19 @@
 # to Wikipedia. Because I'm the #1 lazy man in my life.
 # This will fetch a Wiki page and open it in a browser of your choice.
 
-# Usage: ./wikifetch Article_Name
-# As implied, replace spaces with underscores. As with the actual site,
-# the article name is case-sensitive.
+# Usage: ./wikifetch Article\ Name
+# As the usage shows, the articles names are case-sensitive; this is because
+# the website is, itself, case-sensitive. 
+
+# Converts white space in article name to an underscore
+ARTICLE=$( printf "%s" "$1" | sed -e ' s/[[:space:]]/_/g ' )
 
 # Get your preferred browser to visit said Wikipedia page
 printf "What is your (text or graphical) browser of choice?\\n"
 read -r CLIBROWSER
 
-# Make a local copy of the requested article
-curl -o /tmp/"$1".html https://en.m.wikipedia.org/wiki/"$1"
+# Local copy test
+curl -o /tmp/"$ARTICLE".html https://en.m.wikipedia.org/wiki/"$ARTICLE"
 
 # Huge step: actually opening the page
-$CLIBROWSER /tmp/"$1".html
+$CLIBROWSER /tmp/"$ARTICLE".html
