@@ -1,0 +1,15 @@
+#!/bin/sh
+
+# Usage: ./wikiget (option) $BROWSER $ARTICLE
+
+case "$1" in
+	-v) #visit
+		ARTICLE=$( printf "%s" "$3" | sed -e ' s/[[:space:]]/_/g ' )
+
+		$2 https://en.m.wikipedia.org/wiki/"$ARTICLE";;
+	-*) usage "Not an option. Usage: ./wikiget (-v) $BROWSER $ARTICLE";;
+	 *) #local
+		ARTICLE=$( printf "%s" "$2" | sed -e ' s/[[:space:]]/_/g ' )
+		curl -o /tmp/"$ARTICLE".html https://en.m.wikipedia.org/wiki/"$ARTICLE"
+		$1 /tmp/"$ARTICLE".html;;
+esac 
