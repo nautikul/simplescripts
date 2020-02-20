@@ -1,15 +1,18 @@
 #!/bin/sh
+# A small script for visiting Wikipedia or to curl a webpage to view it locally.
 
-# Usage: ./wikiget (option) $BROWSER $ARTICLE
+# Usage: ./wikiget (option) $BROWSER $ARTICLE\ NAME
+# Just like with the actual website, the article name is case sensitive.
+# You can either use "Article Name", Article_Name, Article\ Name, etc...
+# You know—the UNIX way.
 
 case "$1" in
 	-v) #visit
 		ARTICLE=$( printf "%s" "$3" | sed -e ' s/[[:space:]]/_/g ' )
-
 		$2 https://en.m.wikipedia.org/wiki/"$ARTICLE";;
 	-*) usage "Not an option. Usage: ./wikiget (-v) $BROWSER $ARTICLE";;
 	 *) #local
 		ARTICLE=$( printf "%s" "$2" | sed -e ' s/[[:space:]]/_/g ' )
 		curl -o /tmp/"$ARTICLE".html https://en.m.wikipedia.org/wiki/"$ARTICLE"
 		$1 /tmp/"$ARTICLE".html;;
-esac 
+esac
